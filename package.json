@@ -1,0 +1,21 @@
+{
+  "name": "pwa",
+  "version": "1.0.0",
+  "description": "tst",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp-sass": "^4.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
+  "scripts": {
+    "test": "tst",
+    "start": "gulp"
+  },
+  "keywords": [
+    "tst"
+  ],
+  "author": "rn",
+  "license": "ISC"
+}
