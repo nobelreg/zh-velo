@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Langsamverkehr Zahlen Zürich</title>
+  
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
+
+	<!-- link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varta" -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+	<!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<style></style>
+	
+</head>
+<body>
+	<header></header>
+	<nav id="navi"><ul class="navi"><li class="navi__item"><a href="#std" class="std active">Stunden</a></li><li class="navi__item"><a href="#day" class="day">Tage</a></li><li class="navi__item"><a href="#mon" class="mon">Monate</a></li></ul></nav>
+	<section class="main">
+		<div class="content">
+    	<div class="content__item content__item--map">
+    	  <h2>Zählstationen</h2>
+    		<div id='map' class="content__map"></div></div>
+    	<div class="content__item content__item--canvas">
+    		<h2>Zählung<span></span></h2>
+    		<canvas id="canvas" class="content__canvas h-element--half-transparent"></canvas>
+    		<div id="loading"></div>
+    	</div>
+			<!-- div class="box"><div class="box__item"></div><div class="box__item"></div></div -->
+		</div><!-- // content -->
+		<div class="info h-element--hide" id="info">
+			<p>Angezeigt werden die Daten von 2020.</p>
+			<p class="js-days-info h-element--hide">Damit jeder Wochentag die gleiche Anzahl Tage enthält, werden ggf. die letzten Tage nicht mitgerechnet.</p>
+			<p>Die aktuellsten Daten sind vom Vortag.</p>
+		</div>
+		<div id="app"></div>
+	</section>
+	<footer></footer>
+	<button class="add-button">Add to home screen</button>
+	
+	<script>
+	// Register service worker to control making site work offline
+	if('serviceWorker' in navigator) {
+		/* navigator.serviceWorker.getRegistrations()
+			.then(reg => { // console.log(reg)
+			for(let registration of reg) { 
+				registration.unregister(); 
+	  	} }); */
+	
+  	/* navigator.serviceWorker
+			 // .register('/js/sw.js', { scope: "/" })
+			 // .register('/sw.js', { scope: "/" })
+			 .register('./sw.js')
+			 .then(() => { 
+					console.log('Service Worker Registered'); 
+			 }).catch(() => {
+  				console.error("Install failed due to the path restriction violation.");
+			}); */
+		
+		/* window.addEventListener('load', () => {
+			navigator.serviceWorker.register('js/sw.js')
+				.then(reg => {
+					console.log('Service worker registered! 😎', reg);
+				})
+				.catch(err => {
+					console.log('😥 Service worker registration failed: ', err);
+				});
+		}); */
+	} // end "in navigator"
+</script>
+<!-- JS Library Dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	<script src="js/app.js" type="module"></script> 
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<!-- script src="js/map.js" type="module"></script -->  
+</body>
+</html>

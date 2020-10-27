@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-touch-callout: none; }
+
+body, html {
+  font: 13px/1.2 Helvetica, Arial, sans-serif;
+  color: #666;
+  margin: 0;
+  height: 100%;
+  background-color: #fafaf8; }
+
+h2 {
+  font: 18px/1 sans-serif;
+  font-weight: 300;
+  color: #555;
+  margin: 0 0 6px; }
+
+p {
+  margin: 2px 0 3px; }
+
+a {
+  text-decoration: none; }
+
+header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background-color: #fefefd;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16), 0 0 8px 0 rgba(0, 0, 0, 0.08);
+  z-index: 2;
+  /* @include tablet-up {
+    padding: 20px;
+  } */ }
+  header h1 {
+    letter-spacing: .2px;
+    color: #26251F;
+    margin: 0 0 0 8px;
+    /* @include tablet-up {
+      font-size: 18px;
+    } */ }
+  header img {
+    width: 36px;
+    /* @include tablet-up {
+      width: 48px;
+    } */ }
+
+.h-element--invisible {
+  visibility: hidden; }
+
+.h-element--half-transparent {
+  opacity: .3; }
+
+.h-element--hide {
+  display: none; }
+
+/* variables */
+/* mixins breakpoints */
+.main {
+  margin: 0 auto;
+  max-width: 1200px; }
+
+.navi {
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  max-width: 1200px; }
+  @media (min-width: 720px) {
+    .navi {
+      padding: 12px 24px 0; } }
+
+.navi__item {
+  margin: 0;
+  flex-grow: 1; }
+  @media (min-width: 720px) {
+    .navi__item {
+      margin-right: 12px;
+      flex-grow: 0; } }
+  .navi__item a {
+    color: #555;
+    font-weight: 300;
+    display: block;
+    padding: 10px 16px;
+    box-shadow: 0 3px 2px -2px #ddd;
+    background-color: rgba(54, 162, 235, 0);
+    transition: background-color .2s ease-in-out, box-shadow .2s ease-in-out; }
+    @media (min-width: 720px) {
+      .navi__item a {
+        padding: 12px 32px; } }
+    .navi__item a:hover {
+      background-color: rgba(54, 162, 235, 0.05);
+      box-shadow: 0 3px 2px -2px #ccc; }
+    .navi__item a.active, .navi__item a:active {
+      background-color: rgba(54, 162, 235, 0.1);
+      box-shadow: 0 3px 2px -2px #bbb; }
+
+.content {
+  overflow: hidden;
+  display: flex;
+  margin: 24px 16px 12px; }
+  @media (max-width: 719px) {
+    .content {
+      flex-wrap: wrap; } }
+  @media (min-width: 720px) {
+    .content {
+      margin: 40px 24px 0; }
+      .content::before {
+        content: "";
+        display: block;
+        padding-top: 38%;
+        width: 1px; } }
+
+.content__item {
+  width: 100%;
+  position: relative; }
+
+@media (min-width: 720px) {
+  .content__item--canvas {
+    width: 70%;
+    padding-right: 16px; }
+  .content__item--map {
+    width: 30%;
+    order: 1; } }
+
+@media (max-width: 719px) {
+  .content__item--map {
+    margin-bottom: 24px; }
+  .content__item--canvas::before {
+    display: inline-block;
+    padding-top: 65%;
+    border: 1px dotted green; } }
+
+.content__map {
+  width: 100%;
+  height: calc(100% - 24px);
+  min-height: 250px; }
+  @media (max-width: 719px) {
+    .content__map::before {
+      content: "";
+      display: block;
+      padding-top: 56.25%;
+      padding-top: 65%; } }
+
+.info {
+  padding: 0 16px 0 42px;
+  background: url(../img/icon-warning.svg) no-repeat 16px 0/18px; }
+  @media (min-width: 720px) {
+    .info {
+      padding: 0 24px 0 54px;
+      background-position: 24px 0;
+      background-size: 20px; } }
+
+.box {
+  display: flex;
+  border: 1px solid pink; }
+
+.box__item {
+  flex: 1 0 auto; }
+
+#loading {
+  background: url(../img/loading.svg) no-repeat 50%/100px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  bottom: 0; }
+
+.content--offline .content__item h2,
+.content--offline .content__canvas,
+.content--offline .content__map,
+.content--offline ~ .info {
+  display: none; }
+
+.content--offline .content__item--canvas {
+  min-height: 300px; }
+
+.content--offline #loading {
+  display: flex; }
+
+.content--offline p {
+  margin: auto auto 0; }
+
+/* cheating */
+.leaflet-popup-content-wrapper {
+  border-radius: 4px !important; }
+
+.leaflet-popup-content {
+  margin: 8px 12px !important; }
+  .leaflet-popup-content p {
+    margin: 6px 0 !important; }
