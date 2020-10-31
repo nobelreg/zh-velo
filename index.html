@@ -20,8 +20,6 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
-
-	<!-- link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varta" -->
   <link rel="stylesheet" href="css/styles.css" />
 
 	<!-- Leaflet -->
@@ -52,42 +50,11 @@
 		<div id="app"></div>
 	</section>
 	<footer></footer>
-	<button class="add-button">Add to home screen</button>
-	
-	<script>
-	// Register service worker to control making site work offline
-	if('serviceWorker' in navigator) {
-		/* navigator.serviceWorker.getRegistrations()
-			.then(reg => { // console.log(reg)
-			for(let registration of reg) { 
-				registration.unregister(); 
-	  	} }); */
-	
-  	/* navigator.serviceWorker
-			 // .register('/js/sw.js', { scope: "/" })
-			 // .register('/sw.js', { scope: "/" })
-			 .register('./sw.js')
-			 .then(() => { 
-					console.log('Service Worker Registered'); 
-			 }).catch(() => {
-  				console.error("Install failed due to the path restriction violation.");
-			}); */
-		
-		/* window.addEventListener('load', () => {
-			navigator.serviceWorker.register('js/sw.js')
-				.then(reg => {
-					console.log('Service worker registered! 😎', reg);
-				})
-				.catch(err => {
-					console.log('😥 Service worker registration failed: ', err);
-				});
-		}); */
-	} // end "in navigator"
-</script>
-<!-- JS Library Dependencies -->
+	<!-- button class="button" value="Zu Homescreen hinzufügen"><!-- Add to home screen --></button -->
+	<script></script>
+	<!-- JS Library Dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 	<script src="js/app.js" type="module"></script> 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-	<!-- script src="js/map.js" type="module"></script -->  
 </body>
 </html>

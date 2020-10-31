@@ -1,26 +1,35 @@
 import { drawChart, cloneAndReplace } from './chart.js';
 import { fetchYesterday, fetchLastWeek, fetchYearByMonths } from './queries.js';
 import { loadMap, mapViewReset } from './map.js';
-// import { statSelection } from './map.js';
 
 window.addEventListener('DOMContentLoaded', init);
 
+window.addEventListener('online',  updateIndicator);
+window.addEventListener('offline', updateIndicator);
+updateIndicator();
+
+/* handling on-/offline */
+function updateIndicator() {
+	console.log('on/offline first', navigator.onLine);
+
+	if (!navigator.onLine) {
+		addOfflineInfoTxt();
+	}
+	document.body.classList.toggle('body--offline', !navigator.onLine);
+}
+
+/* after DOM ready / only once (initially) */
 function init() {
-	
-	// console.log('online', online)
+	console.log('init');
 	if (navigator.onLine) { // we're online :)
-		fetchYesterday();
+		// initially we always show	"std"	
+		fetchYesterday();			
 		// fetchYearByMonths();
 		loadMap();
-		loadEventListeners();
-	} else { // we show something else ...
+		loadNaviListener();
 		
-		// navi could go
-		document.querySelector('.content').classList.add('content--offline');
-		const p = document.createElement('p');
-		const txt = document.createTextNode('Leider ist in diesem Moment kein Netz verfügbar.');
-		p.appendChild(txt); // sure?
-		document.getElementById('loading').appendChild(p);
+		loadServiceWorker();
+		addToHomescreenButton();
 	}
 	
 	// prefixScript('https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js');
@@ -30,13 +39,12 @@ function init() {
 	// script.src = 'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js';
 	// document.body.appendChild(script);
 	
-	loadServiceWorker();	
 }
 
-const loadEventListeners = () => {
+/* handling top navigation */
+const loadNaviListener = () => {
 	const naviLinks = document.querySelectorAll('#navi a'); // document.getElementById('navi').getElementsByTagName('a');	// <-- safari doesn't understand :(
 	let target = 'std';
-	let link;
 	const loadingImg = document.getElementById('loading');
 	
 	for (const link of naviLinks) {
@@ -70,16 +78,51 @@ const loadEventListeners = () => {
 	}
 }
 
+/* "active" navi element */
+const getCurrentItem = () => {
+	return document.querySelector('.navi__item .active').getAttribute('href').substr(1);
+}
+
+/* currently unused */ 
+const showSelectedChart = (target) => {
+	if (target == 'std') {
+		fetchYesterday();
+	} else if (target == 'day') {						
+		fetchLastWeek(); // days
+	} else if (target == 'mon') {
+		fetchYearByMonths(); // mon
+	}
+}
+
+/* info on network status */
+const addOfflineInfoTxt = () => {
+	// only if this happens for the first time
+	if (!document.getElementById('loading').hasChildNodes('p')) {
+		const p = document.createElement('p');
+		p.appendChild(document.createTextNode('Leider ist in diesem Moment kein Netz verfügbar.')); // sure?
+		document.getElementById('loading').appendChild(p);
+	}
+}
+
+/* handling caches / offline availability */
 const loadServiceWorker = () => {
 	if('serviceWorker' in navigator) {
+		/** in case ...
+		navigator.serviceWorker.getRegistrations()
+			.then(reg => { // console.log(reg)
+			for(let registration of reg) { 
+				registration.unregister(); 
+	  	} });
+		*/
+	
 		navigator.serviceWorker
-			 // .register('/js/sw.js')
-			 .register('/sw.js') // needs to be at root level :/
-			 .then(() => { 
-					console.log('Service Worker Registered'); 
-			 }).catch(err => {
-					console.log('Service worker registration failed: ', err);
-				});;
+			// .register('/js/sw.js')
+			.register('/sw.js') // needs to be at root level :/
+			.then(() => { 
+				console.log('Service Worker Registered'); 
+			}).catch(err => {
+				console.log('Service worker registration failed: ', err);
+			});
 	}
 }
 
@@ -110,21 +153,11 @@ const fetchZaehler = async (date) => {
 	}
 }
 
-// Register service worker to control making site work offline
-/* if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-           // .register('/js/sw.js')
-           .register('/sw.js')
-           .then(() => { 
-           		console.log('Service Worker Registered'); 
-           });
-} */
-
 /* installation */
+const addToHomescreenButton = () => {
 let deferredPrompt;
-// const addBtn = document.querySelector('.add-button');
-const addBtn = document.querySelector('.add-button');
-addBtn.style.display = 'none';
+// const addBtn = document.querySelector('.button');
+// addBtn.style.display = 'none';
 
 window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent Chrome 67 and earlier from automatically showing the prompt
@@ -132,7 +165,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // Stash the event so it can be triggered later.
   deferredPrompt = e;
   // Update UI to notify the user they can add to home screen
-  addBtn.style.display = 'block';
+  // addBtn.style.display = 'block';
+  
+  const addBtn = document.createElement('button');
+  // addBtn.setAttribute('class', 'button')
+  // addBtn.setAttribute('value', 'Zu Homescreen hinzufügen');
+  	 
+  Object.assign(addBtn, {
+  	className: 'button',
+  	value: 'Zu Homescreen hinzufügen',
+	})	 
+  document.body.appendChild(addBtn);
 
   addBtn.addEventListener('click', (e) => {
     // hide our user interface that shows our A2HS button
@@ -141,12 +184,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
     deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-        deferredPrompt = null;
-      });
+			if (choiceResult.outcome === 'accepted') {
+      	console.log('User accepted the A2HS prompt');
+      } else {
+      	console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
   });
 });
+}
