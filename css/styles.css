@@ -212,10 +212,12 @@ body:not(.body--offline) #loading p {
   border-radius: 2px;
   cursor: pointer;
   transition: background-color .2s ease-in-out,  background-size .2s ease-in-out,  box-shadow .2s ease-in-out, opacity .2s ease-in-out, font-size .2s ease-in-out; }
+  @media (min-width: 720px) {
+    .button {
+      top: 16px; } }
   @media (min-width: 1200px) {
     .button {
-      top: 16px;
-      right: calc(50% - 600px); } }
+      top: 16px; } }
   .button:hover {
     background-color: #4072B4;
     background-size: 0;

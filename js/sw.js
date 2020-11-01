@@ -1,9 +1,8 @@
 self.addEventListener('install', (e) => {
-	// console.log(' ... ', e.request.url);
+// console.log(' ... ', e.request.url);
  e.waitUntil(
    caches.open('pwa-zh-velo').then((cache) => {
      return cache.addAll([
-       // '/pwa-examples/a2hs/',
        '/',
        '/index.html',
        '/js/app.js',

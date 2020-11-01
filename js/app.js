@@ -1,5 +1,4 @@
-import { drawChart, cloneAndReplace } from './chart.js';
-import { fetchYesterday, fetchLastWeek, fetchYearByMonths } from './queries.js';
+import { fetchData } from './queries.js';
 import { loadMap, mapViewReset } from './map.js';
 
 window.addEventListener('DOMContentLoaded', init);
@@ -22,23 +21,14 @@ function updateIndicator() {
 function init() {
 	console.log('init');
 	if (navigator.onLine) { // we're online :)
-		// initially we always show	"std"	
-		fetchYesterday();			
-		// fetchYearByMonths();
+		// initially we always show	"std"
+		fetchData('std');
 		loadMap();
 		loadNaviListener();
 		
 		loadServiceWorker();
 		addToHomescreenButton();
-	}
-	
-	// prefixScript('https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js');
-	// let scripts = [{'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js', {'':''}}, {'js/map.js', {'type':'module'}];
-	
-	// let script = document.createElement('script');
-	// script.src = 'https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js';
-	// document.body.appendChild(script);
-	
+	}	
 }
 
 /* handling top navigation */
@@ -61,13 +51,13 @@ const loadNaviListener = () => {
 					document.getElementById('canvas').classList.add('h-element--half-transparent');	
 					document.getElementById('loading').classList.remove('h-element--hide');			
 					if (target == 'std') {
-						fetchYesterday();
+						fetchData('std')
 						info_txt.add('h-element--hide');
 					} else if (target == 'day') {						
-						fetchLastWeek(); // days
+						fetchData('day')
 						info_txt.remove('h-element--hide');
 					} else if (target == 'mon') {
-						fetchYearByMonths(); // mon
+						fetchData('mon')
 						info_txt.add('h-element--hide');
 					}
 					e.target.classList.add('active');
@@ -81,17 +71,6 @@ const loadNaviListener = () => {
 /* "active" navi element */
 const getCurrentItem = () => {
 	return document.querySelector('.navi__item .active').getAttribute('href').substr(1);
-}
-
-/* currently unused */ 
-const showSelectedChart = (target) => {
-	if (target == 'std') {
-		fetchYesterday();
-	} else if (target == 'day') {						
-		fetchLastWeek(); // days
-	} else if (target == 'mon') {
-		fetchYearByMonths(); // mon
-	}
 }
 
 /* info on network status */
@@ -126,71 +105,37 @@ const loadServiceWorker = () => {
 	}
 }
 
-const fetchZaehler = async (date) => {
-	
-	let query = '?sql=SELECT SUM("VELO_IN"::INTEGER) as velo, SUM("FUSS_IN"::INTEGER) as fuss, "FK_ZAEHLER" as zaehler FROM "b9308f85-9066-4f5b-8eab-344c790a6982" WHERE "DATUM" LIKE \'2020%\' GROUP BY zaehler';
- 	 	
-  const response = await fetch(url + query);
-	if (response.status >= 200 && response.status <= 299) {
-  	const jsonResponse = await response.json();
-		console.log(jsonResponse.result.records.length, jsonResponse);
-		let velo_arr = []; let fuss_arr = [];	
-		
-		jsonResponse.result.records.forEach((elm, i) => {
-			if (elm.velo > 0) {
-				console.log('velo', i)
-				velo_arr[i] = elm.zaehler
-			} 
-			if (elm.fuss > 0) {
-				console.log('fuss', i)
-				fuss_arr[i] = elm.zaehler
-			}
-		});		
-		console.log(velo_arr, fuss_arr)
-		// drawChart(combination);
-	} else { // Handle errors
-  	console.log(response.status, response.statusText);
-	}
-}
-
 /* installation */
 const addToHomescreenButton = () => {
-let deferredPrompt;
-// const addBtn = document.querySelector('.button');
-// addBtn.style.display = 'none';
+	let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  // Update UI to notify the user they can add to home screen
-  // addBtn.style.display = 'block';
-  
-  const addBtn = document.createElement('button');
-  // addBtn.setAttribute('class', 'button')
-  // addBtn.setAttribute('value', 'Zu Homescreen hinzufügen');
-  	 
-  Object.assign(addBtn, {
-  	className: 'button',
-  	value: 'Zu Homescreen hinzufügen',
-	})	 
-  document.body.appendChild(addBtn);
+	window.addEventListener('beforeinstallprompt', (e) => {
+		// Prevent Chrome 67 and earlier from automatically showing the prompt
+		e.preventDefault();
+		// Stash the event so it can be triggered later.
+		deferredPrompt = e;
+		// Update UI to notify the user they can add to home screen	
+		const addBtn = document.createElement('button');	 
+		Object.assign(addBtn, {
+			className: 'button',
+			value: 'Zu Homescreen hinzufügen',
+		})	 
+		document.body.appendChild(addBtn);
 
-  addBtn.addEventListener('click', (e) => {
-    // hide our user interface that shows our A2HS button
-    addBtn.style.display = 'none';
-    // Show the prompt
-    deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-			if (choiceResult.outcome === 'accepted') {
-      	console.log('User accepted the A2HS prompt');
-      } else {
-      	console.log('User dismissed the A2HS prompt');
-      }
-      deferredPrompt = null;
-    });
-  });
-});
+		addBtn.addEventListener('click', (e) => {
+			// hide our user interface that shows our A2HS button
+			addBtn.style.display = 'none';
+			// Show the prompt
+			deferredPrompt.prompt();
+			// Wait for the user to respond to the prompt
+			deferredPrompt.userChoice.then((choiceResult) => {
+				if (choiceResult.outcome === 'accepted') {
+					console.log('User accepted the A2HS prompt');
+				} else {
+					console.log('User dismissed the A2HS prompt');
+				}
+				deferredPrompt = null;
+			});
+		});
+	});
 }

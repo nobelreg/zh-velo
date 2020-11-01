@@ -1,17 +1,11 @@
-import { fetchYesterday, fetchLastWeek, fetchYearByMonths } from './queries.js';
-import { drawChart, cloneAndReplace } from './chart.js';
+import { fetchData } from './queries.js';
 import { stations } from './geojson/taz.view_eco_standorte.js';
 
 let currentLayer = null;
-// let justClosed = null;
-// let reset = false;
 
 let map, stationLayers;
 
-// window.addEventListener('DOMContentLoaded', init);
-
 export const loadMap = () => {
-
 	map = L.map('map', { /* dragging: !L.Browser.mobile, */ tap: !L.Browser.mobile }).setView([47.36667, 8.54], 13)
 	.on('click', (e) => { // not on a marker!
 		showLayers();
@@ -27,7 +21,6 @@ export const loadMap = () => {
 		pointToLayer: (feature, latlng) => {
 				return L.circleMarker(latlng, {
 					radius: 8,
-					// fillColor: feature.properties.abkuerzung.substr(0,3) == 'VZS' ? "#5DB755" : '#4072B4',
 					fillColor: feature.properties.abkuerzung.substr(0,3) == 'VZS' ? "#4072B4" : '#b0bec5', // '#9e9e9e',
 					color: "#ccc",
 					weight: 1,
@@ -40,7 +33,6 @@ export const loadMap = () => {
 		.on('click', (e) => { // on a marker
 		
 			if (currentLayer !== e.layer) {
-					// currentLayer = e.layer;
 				const station_arr = [];
 				stations.features.forEach((elm, i) => {
 					if (elm.properties.abkuerzung == e.layer.feature.properties.abkuerzung) {
@@ -71,7 +63,6 @@ export const loadMap = () => {
 const popup = (feature, layer) => {
 	let popupContent = '';
 	if (feature.properties && feature.properties.fk_zaehler && feature.properties.bezeichnung) {
-		// popupContent += feature.properties.popupContent;
 		popupContent += '<b>' + feature.properties.fk_zaehler + '</b>';
 		popupContent += '<p>' + feature.properties.bezeichnung + '</p>';	
 	} else {
@@ -102,11 +93,11 @@ const reloadChart = (stationName = null, station_arr = []) => {
 	const classList = document.querySelectorAll('.navi .active')[0].classList;
 			
 		if (classList.contains('day')) {
-			fetchLastWeek(station_arr); // days	
+			fetchData('day', station_arr);	
 		} else if (classList.contains('mon')) {
-			fetchYearByMonths(station_arr); // mon		
+			fetchData('mon', station_arr);
 		} else { // we use "the first option" (std)
-			fetchYesterday(station_arr);		
+			fetchData('std', station_arr);	
 		}
 		
 		setChartDescription(stationName);
