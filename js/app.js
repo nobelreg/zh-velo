@@ -44,7 +44,8 @@ const loadNaviListener = () => {
 					link.classList.remove('active');
 				} else {
 					target = e.target.attributes.class.textContent;
-					const info_txt = document.getElementById('info').children[1].classList;
+					// const info_txt = document.getElementById('info').children[2].classList;
+					const info_txt = document.querySelector('.js-days-info').classList;
 
 					document.getElementById('canvas').classList.add('h-element--half-transparent');	
 					document.getElementById('loading').classList.remove('h-element--hide');			
