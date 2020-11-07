@@ -8,10 +8,14 @@ let map, stationLayers;
 export const loadMap = () => {
 	map = L.map('map', { /* dragging: !L.Browser.mobile, */ tap: !L.Browser.mobile }).setView([47.36667, 8.54], 13)
 	.on('click', (e) => { // not on a marker!
-		showLayers();
-		reloadChart(null, []);
-		currentLayer = null;
+		if (currentLayer) { // and only "once"
+			showLayers();
+			reloadChart(null, []);
+			currentLayer = null;
+		}
 	});
+
+	/* WFS: https://www.ogd.stadt-zuerich.ch/wfs/geoportal/Standorte_der_automatischen_Fuss__und_Velozaehlungen?SERVICE=WFS&REQUEST=GetCapabilities&VERSION=1.1.0 */
 
 	stationLayers = L.geoJSON(stations, {
 		filter: (feature, layer) => {	
@@ -92,10 +96,8 @@ const reloadChart = (stationName = null, station_arr = []) => {
 	document.getElementById('loading').classList.remove('h-element--hide');			
 	const classList = document.querySelectorAll('.navi .active')[0].classList;
 			
-		if (classList.contains('day')) {
-			fetchData('day', station_arr);	
-		} else if (classList.contains('mon')) {
-			fetchData('mon', station_arr);
+		if (classList.contains('day')) { fetchData('day', station_arr);	
+		} else if (classList.contains('mon')) { fetchData('mon', station_arr);
 		} else { // we use "the first option" (std)
 			fetchData('std', station_arr);	
 		}
@@ -111,7 +113,8 @@ const setChartDescription = (stationName = null) => {
 export const mapViewReset = () => {
 	// map.viewreset();
   // reset = true;
+  currentLayer = null;
 	showLayers();
   map.closePopup();
-	setChartDescription('')
+	setChartDescription('');
 }

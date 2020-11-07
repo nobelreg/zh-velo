@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "tst",
   "main": "gulpfile.js",
+  "repository": {
+  	"type" : "git",
+  	"url" : "https://github.com/nobelreg/zh-velo.git"
+	},
   "dependencies": {
     "gulp-sass": "^4.1.0"
   },

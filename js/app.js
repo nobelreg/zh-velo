@@ -9,7 +9,6 @@ updateIndicator();
 
 /* handling on-/offline */
 function updateIndicator() {
-	console.log('on/offline first', navigator.onLine);
 
 	if (!navigator.onLine) {
 		addOfflineInfoTxt();
@@ -19,14 +18,13 @@ function updateIndicator() {
 
 /* after DOM ready / only once (initially) */
 function init() {
-	console.log('init');
 	if (navigator.onLine) { // we're online :)
 		// initially we always show	"std"
 		fetchData('std');
 		loadMap();
 		loadNaviListener();
 		
-		loadServiceWorker();
+		// loadServiceWorker();
 		addToHomescreenButton();
 	}	
 }
