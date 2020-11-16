@@ -91,8 +91,9 @@ export const drawChart = (input) => {
 					avg.forEach((elm, i) => {
 						let pos = yAxe.getPixelForValue(elm);
 
-						if (i === 0 || // so the avgs (hopefully) aren't overlapping
-							(prevPos < (pos - diff) || prevPos > (pos + diff))) {
+						if (elm !== 0 && // we don't care for 0 values
+							(i === 0 || 	 // preventing avgs (hopefully) from overlapping
+							(prevPos < (pos - diff) || prevPos > (pos + diff)))) {
 							// line:
 							ctxPlugin.strokeStyle = datasets[i].backgroundColor;
 							ctxPlugin.setLineDash([5, 5]);

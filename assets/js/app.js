@@ -131,16 +131,15 @@ const showA2HSButton = (counter = 0, date = null) => {
 		// stashing event so it can be triggered later
 		deferredPrompt = e;
 		
-		// only 
+		// only if there isn't one yet
 		if (document.getElementsByClassName('button').length === 0) {
 		
+			// provide a A2HS button
 			const addBtn = document.createElement('button');
-			const txt = 'Zu Homescreen hinzufügen';
 			Object.assign(addBtn, {
 				className: 'button',
-				value: txt,
+				value: 'Zu Homescreen hinzufügen',
 			});
-
 			document.body.appendChild(addBtn);
 
 			addBtn.addEventListener('click', (e) => {
@@ -148,7 +147,7 @@ const showA2HSButton = (counter = 0, date = null) => {
 				addBtn.classList.add('h-element--hide');
 				// show prompt
 				deferredPrompt.prompt();
-				// Wait for the user to respond to the prompt
+				// wait for user to respond to prompt
 			
 				deferredPrompt.userChoice.then((choiceResult) => {
 

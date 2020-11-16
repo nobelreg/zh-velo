@@ -39,11 +39,9 @@ export const loadMap = () => {
 			if (currentLayer !== e.layer) {
 				const station_arr = [];
 				stations.features.forEach((elm, i) => {
-					console.log(elm.properties)
 					// if (elm.properties.abkuerzung == e.layer.feature.properties.abkuerzung) {
 					if (elm.properties.id1 == e.layer.feature.properties.id1) {
 						// preparing for use with DB, with '
-						// station_arr[i] = '\'' + elm.properties.fk_zaehler + '\'';
 						station_arr[i] = '\'' + elm.properties.id1 + '\'';
 					}
 				});

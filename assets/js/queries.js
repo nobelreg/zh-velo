@@ -9,15 +9,15 @@ const MONTHS = ['Jan', 'Feb', 'März', 'April', 'Mai', 'Juni', 'Juli', 'Aug', 'S
 const WEEKDAYS = ['SO', 'MO', 'DI', 'MI', 'DO', 'FR', 'SA'];
 
 const NOW = new Date();
-const TODAY    = NOW.toISOString().split("T")[0];
-const DATADATE = localStorage.getItem("dataDate") || null;
+const TODAY = NOW.toISOString().split("T")[0];
+const DATADATE = localStorage.getItem("zhVelo.dataDate") || null;
 let savedQueryData = {};
 
 if (DATADATE === null || DATADATE != TODAY) {
-	localStorage.setItem("dataDate", TODAY);
-	localStorage.setItem("savedQueryData", "{}");
+	localStorage.setItem("zhVelo.dataDate", TODAY);
+	localStorage.setItem("zhVelo.savedQueryData", "{}");
 } else {
-	savedQueryData = JSON.parse(localStorage.getItem("savedQueryData"));
+	savedQueryData = JSON.parse(localStorage.getItem("zhVelo.savedQueryData"));
 } 
 
 /* generic fetch */
@@ -42,7 +42,7 @@ export const fetchData = async (target = 'std', stations = []) => {
 				combination = combineSTD(jsonResponse.result.records);
 			}
 			savedQueryData[querykey] = combination;
-			localStorage.setItem("savedQueryData", JSON.stringify(savedQueryData));
+			localStorage.setItem("zhVelo.savedQueryData", JSON.stringify(savedQueryData));
 			drawChart(combination);
 			setToActive(target);
 			
@@ -56,7 +56,7 @@ export const fetchData = async (target = 'std', stations = []) => {
 /* simple hash, for reference storage */
 const toHash = (string) => {              
 		let hash = 0;
-		let len = string.length;
+		const len = string.length;
 		if (len === 0) return hash; 
 			
 		for (let i = 0; i < len; i++) { 
@@ -81,13 +81,17 @@ const gatherStations = (stations) => {
 /* generic queries, according to navigation 
 (and possibly selected station) */
 const getQuery = (target, where) => { // encodeURIComponent().
-	const fields = 'SUM("VELO_IN"::INTEGER + "VELO_OUT"::INTEGER) AS velo, SUM("FUSS_IN"::INTEGER + "FUSS_OUT"::INTEGER) AS fuss';
+	const fields = 'SUM(COALESCE("VELO_IN"::INTEGER, 0) + COALESCE("VELO_OUT"::INTEGER, 0)) AS velo, SUM(COALESCE("FUSS_IN"::INTEGER, 0) + COALESCE("FUSS_OUT"::INTEGER, 0)) AS fuss';
 	if (target == 'day') {	
 		return '?sql=' + encodeURIComponent(
 						'SELECT SUBSTRING("DATUM", 1, 10) AS date, ' + fields + 
 						' FROM "' + config.resource_id + '" ' + where + 
 						' GROUP BY date ORDER BY date ASC');					
 	} else if (target == 'mon') {
+		console.log('?sql=' + encodeURIComponent(
+						'SELECT SUBSTRING("DATUM", 6, 2) AS mon, ' + fields + 
+						' FROM "' + config.resource_id + '" ' + where + 
+						' GROUP BY mon ORDER BY mon ASC'));
 		return '?sql=' + encodeURIComponent(
 						'SELECT SUBSTRING("DATUM", 6, 2) AS mon, ' + fields + 
 						' FROM "' + config.resource_id + '" ' + where + 
