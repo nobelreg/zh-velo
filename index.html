@@ -7,24 +7,26 @@
   <title>Langsamverkehr Zahlen Zürich</title>
   
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/assets/img/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/img/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/img/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/img/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/assets/img/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/assets/img/favicon-96x96.png">
 
 	<!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-	<style></style>
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/assets/css/styles-5038f836f6.css">
+  <!-- endinject -->
+  <style></style>
 	
 </head>
 <body>
@@ -44,19 +46,19 @@
 		</div><!-- // content -->
 		<div class="info h-element--hide" id="info">
 			<p>Angezeigt werden die Daten von 2020. Die aktuellsten Daten sind vom Vortag.</p>
-			<p>∅ Fussgänger wird nicht dargestellt, wenn sich ∅ Velo und ∅ Fussgänger überlappen würden (was meistens der Fall ist).</p>
+			<p>∅ Fussgänger wird nicht dargestellt, wenn sich ∅ Velo und ∅ Fussgänger überlappen würden.</p>
 			<p class="js-days-info h-element--hide">Damit jeder Wochentag die gleiche Anzahl Tage enthält, werden ggf. die letzten Tage nicht mitgerechnet.</p>
-			<p>Quelle für sämtliche Daten: Stadt Zürich</p>
+			<p>Quelle für sämtliche Daten: <a href="https://data.stadt-zuerich.ch/">Stadt Zürich</a></p>
 		</div>
 		<div id="app"></div>
 	</section>
-	<footer></footer>
-	<!-- button class="button" value="Zu Homescreen hinzufügen"><!-- Add to home screen --></button -->
+	<footer>
+	  <!-- button class="button" value="Zu Homescreen hinzufügen"><!-- Add to home screen --></button -->
+	</footer>
 	<script></script>
 	<!-- JS Library Dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <!-- script src="js/md5.min.js"></script -->
-	<script src="js/app.js" type="module"></script> 
+	<script src="/assets/js/app.js" type="module"></script> 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 </body>
 </html>
