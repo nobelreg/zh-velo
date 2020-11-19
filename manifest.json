@@ -1,5 +1,5 @@
 {
-	"name": "Langsahmverkehr Zürich",
+  "name": "Langsahmverkehr Zürich",
   "short_name": "Langsahmverkehr",
   "start_url": "/index.html",
   "description": "Visualises volumes of traffic (on cycles and foot) in Zurich - despite it's very forbidding infrastructure.",
