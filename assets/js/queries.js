@@ -89,10 +89,6 @@ const getQuery = (target, where) => { // encodeURIComponent().
             ' FROM "' + config.resource_id + '" ' + where + 
             ' GROUP BY date ORDER BY date ASC');          
   } else if (target == 'mon') {
-    console.log('?sql=' + encodeURIComponent(
-            'SELECT SUBSTRING("DATUM", 6, 2) AS mon, ' + fields + 
-            ' FROM "' + config.resource_id + '" ' + where + 
-            ' GROUP BY mon ORDER BY mon ASC'));
     return '?sql=' + encodeURIComponent(
             'SELECT SUBSTRING("DATUM", 6, 2) AS mon, ' + fields + 
             ' FROM "' + config.resource_id + '" ' + where + 
