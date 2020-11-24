@@ -1,4 +1,4 @@
-import { fetchData } from './queries.js';
+import { fetchData, setResourcesAndFetch } from './queries.js';
 import { loadMap, mapViewReset } from './map.js';
 
 window.addEventListener('DOMContentLoaded', init);
@@ -19,7 +19,8 @@ function updateIndicator() {
 function init() {
   if (navigator.onLine) { // we're online :)
     // initially we always show  "std"
-    fetchData('std');
+    // fetchData('std'); ==> we need resources first :/
+    setResourcesAndFetch('std'); // => then (within that) we will fetchData('std')
     loadMap();
     loadNaviListener();
 
@@ -43,19 +44,23 @@ const loadNaviListener = () => {
           link.classList.remove('active');
         } else {
           target = e.target.attributes.class.textContent;
-          const info_txt = document.querySelector('.js-days-info').classList;
+          const info_txt_days = document.querySelector('.js-days-info').classList;
+          const info_txt_hours = document.querySelector('.js-hours-info').classList;
 
           document.getElementById('canvas').classList.add('h-element--half-transparent');  
           document.getElementById('loading').classList.remove('h-element--hide');      
           if (target == 'std') {
             fetchData('std')
-            info_txt.add('h-element--hide');
+            info_txt_days.add('h-element--hide');
+            info_txt_hours.remove('h-element--hide'); // days & hours
           } else if (target == 'day') {            
             fetchData('day')
-            info_txt.remove('h-element--hide');
+            info_txt_days.remove('h-element--hide');
+            info_txt_hours.remove('h-element--hide'); // days & hours
           } else if (target == 'mon') {
             fetchData('mon')
-            info_txt.add('h-element--hide');
+            info_txt_days.add('h-element--hide');
+            info_txt_hours.add('h-element--hide');
           }
           e.target.classList.add('active');
           mapViewReset();
@@ -160,5 +165,5 @@ const showA2HSButton = (counter = 0, date = null) => {
         });
       });  
     }
-  });
+  });  
 }
