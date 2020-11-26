@@ -26,6 +26,8 @@ function init() {
 
     loadServiceWorker();
     handleA2HSButton();
+    
+    fetchWebview();
   }  
 }
 
@@ -166,4 +168,84 @@ const showA2HSButton = (counter = 0, date = null) => {
       });  
     }
   });  
+}
+
+const fetchWebview = async () => {
+  let webview = 'https://cors-anywhere.herokuapp.com/https://www.srf.ch/landingpage/16859205/webview?geolocationId=47.3797,8.5342';
+	webview = 'https://cors-anywhere.herokuapp.com/https://www.srf.ch/landingpage/1646/webview';
+	const response = await fetch(webview);
+	if (response.status >= 200 && response.status <= 299) {
+		const htmlResponse = await response.text();
+
+		let parser = new DOMParser();
+		let parsedHtml = parser.parseFromString(htmlResponse, 'text/html');
+		
+		let container = document.createElement('div');
+		container.setAttribute('id', 'container');
+		
+		let head = parsedHtml.getElementsByTagName('head').item('node'); // .children.item('head').childNodes;
+		let body = parsedHtml.getElementsByTagName('body').item('node');
+		// body.childNodes.forEach((elm) => { console.log(elm) });
+	
+		// tst:
+		// document.getElementById('webview').getElementsByTagName('body').item('node')
+		
+		console.log('==>', parsedHtml.getElementsByTagName('link'), parsedHtml.getElementsByTagName('html'))
+		
+		let links = head.getElementsByTagName('link'); // parsedHtml.getElementsByTagName('link');
+		let href = '';
+		for (let link of links) {
+			href = link.getAttribute('href');
+			if (href.indexOf('srf.ch/') == -1 && href.substr(0, 5) == '/var/') {
+				link.setAttribute('href', 'https://www.srf.ch' + href);
+			} // console.log('link..', link)
+			if (link.getAttribute('rel') === 'preload' && href.indexOf('.css') > -1) {
+				link.setAttribute('rel', 'stylesheet')
+				document.getElementsByTagName('head').item('node').appendChild(link);
+			}
+		}
+		
+		links = body.getElementsByTagName('img'); // parsedHtml.getElementsByTagName('img');
+		let src = '';
+		for (let link of links) {
+			// console.log('link', link)
+			src = link.getAttribute('src');
+			// lazyload imgs ...
+			if (!src && link.getAttribute('data-src')) {
+				link.setAttribute('src', link.getAttribute('data-src'));
+			}
+			
+			if (src && src.indexOf('srf.ch/') == -1 && src.substr(0, 5) == '/var/') {
+				link.setAttribute('src', 'https://www.srf.ch' + src);
+			} // console.log('src..', link)
+		}
+		
+		links = body.getElementsByTagName('script');
+		for (let link of links) {
+			// console.log('link', link)
+			src = link.getAttribute('src');
+			if (src && src.indexOf('srf.ch/') == -1 && src.substr(0, 5) == '/var/') {
+				link.setAttribute('src', 'https://www.srf.ch' + src);
+			}
+		}
+		
+		links = head.getElementsByTagName('meta');
+		for (let link of links) {
+			console.log(link)
+			// link.remove();
+			link.parentNode.removeChild(link); // broken :/
+		}
+		
+		// let clone = elem.cloneNode(true);		
+		let body_div = document.createElement('div');
+		body_div.setAttribute('id', 'body_div');
+		// body_div.innerHTML = head.innerHTML + body.innerHTML;
+		
+		// document.getElementById('webview').appendChild(container);
+		document.getElementById('webview').innerHTML = head.innerHTML + body.innerHTML;
+		// container.append(body_div)
+		
+	} else { // handle errs
+		console.log(response.status, response.statusText);
+	}
 }
